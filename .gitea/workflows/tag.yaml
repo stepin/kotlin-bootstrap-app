@@ -1,0 +1,80 @@
+name: Tag CI
+
+on:
+  push:
+    tags: [ v* ]
+
+jobs:
+  create_release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: |
+            Changes in this Release
+            - ...
+          draft: false
+          prerelease: false
+
+  build:
+    name: Unit tests, sonar, and build
+    runs-on: ubuntu-latest
+    needs: [ create_release ]
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-java@v2
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+          cache: 'gradle'
+      - name: Current version
+        run: ./gradlew currentVersion --no-daemon
+      - name: Build and test
+        run: ./gradlew build --no-daemon
+      - name: Sonar
+        run: ./gradlew sonar --no-daemon
+      - name: Upload target for next job
+        uses: actions/upload-artifact@v3
+        with:
+          name: build
+          path: build
+
+  build_docker_image:
+    name: Build docker image
+    runs-on: ubuntu-latest
+    needs: [ build ]
+    steps:
+      - name: Build Docker image
+        run: ./gradlew imageBuild --no-daemon
+        # TODO for real apps (this code is too company-specific)
+  #      - name: Push Docker image
+  #        run: ./gradlew imagePush --no-daemon
+
+  # TODO for real apps (this code is too company-specific)
+  deploy_to_prod:
+    name: Deploy to prod
+    runs-on: ubuntu-latest
+    needs: [ build_docker_image ]
+    steps:
+      - run: echo "The job was automatically triggered by a ${{ gitea.event_name }} event."
+      - run: echo "This job is now running on a ${{ runner.os }} server hosted by Gitea!"
+      - run: echo "The name of your branch is ${{ gitea.ref }} and your repository is ${{ gitea.repository }}."
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - run: echo "The ${{ gitea.repository }} repository has been cloned to the runner."
+      - run: echo "The workflow is now ready to test your code on the runner."
+      - name: List files in the repository
+        run: |
+          ls ${{ gitea.workspace }}
+      - run: echo "This job's status is ${{ gitea.status }}."

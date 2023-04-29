@@ -1,0 +1,30 @@
+[versions]
+quarkusJooq = "2.0.0"
+jooq = "3.18.3"
+kotlin = "1.8.10"
+postgres = "42.5.1"
+quarkusMockk = "2.0.0"
+archunit = "1.0.1"
+log4jKotlin = "1.2.0"
+ktlintGradle = "11.3.2"
+axionRelease = "1.15.0"
+testcontainersPostgresql = "1.18.0"
+
+[libraries]
+jooq-quarkus = { module = "io.quarkiverse.jooq:quarkus-jooq", version.ref = "quarkusJooq" }
+jooq-meta = { module = "org.jooq:jooq-meta", version.ref = "jooq" }
+jooq-codegen = { module = "org.jooq:jooq-codegen", version.ref = "jooq" }
+mockk-quarkus = { module = "io.quarkiverse.mockk:quarkus-junit5-mockk", version.ref = "quarkusMockk" }
+archunit = { module = "com.tngtech.archunit:archunit", version.ref = "archunit" }
+log4j-kotlin = { module = "org.apache.logging.log4j:log4j-api-kotlin", version.ref = "log4jKotlin" }
+testcontainers-postgresql = { module = "org.testcontainers:postgresql", version.ref = "testcontainersPostgresql" }
+testcontainers-jupiter = { module = "org.testcontainers:junit-jupiter", version.ref = "testcontainersPostgresql" }
+
+[plugins]
+kover = { id = "org.jetbrains.kotlinx.kover", version = "0.6.1" }
+jooq = { id = "nu.studer.jooq", version = "8.2" }
+dokka = { id = "org.jetbrains.dokka", version.ref = "kotlin" }
+sonar = { id = "org.sonarqube", version = "4.0.0.2929" }
+ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlintGradle" }
+axion-release = { id = "pl.allegro.tech.build.axion-release", version.ref = "axionRelease" }
+task-tree = { id = "com.dorongold.task-tree", version = "2.1.1" }

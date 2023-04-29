@@ -1,4 +1,4 @@
-package name.stepin
+package name.stepin.web
 
 import io.quarkus.test.junit.QuarkusTest
 import io.restassured.RestAssured.given
@@ -6,15 +6,14 @@ import org.hamcrest.CoreMatchers.`is`
 import org.junit.jupiter.api.Test
 
 @QuarkusTest
-class GreetingResourceTest {
+class GreetingControllerTest {
 
     @Test
     fun testHelloEndpoint() {
         given()
-          .`when`().get("/hello")
-          .then()
-             .statusCode(200)
-             .body(`is`("Hello from RESTEasy Reactive"))
+            .`when`().get("/api/hello")
+            .then()
+            .statusCode(200)
+            .body(`is`("Hello RESTEasy "))
     }
-
 }

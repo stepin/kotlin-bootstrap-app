@@ -1,6 +1,6 @@
-package name.stepin
+package name.stepin.web
 
 import io.quarkus.test.junit.QuarkusIntegrationTest
 
 @QuarkusIntegrationTest
-class GreetingResourceIT : GreetingResourceTest()
+class GreetingControllerIT : GreetingControllerTest()

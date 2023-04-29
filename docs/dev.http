@@ -1,0 +1,7 @@
+### GET hello
+GET http://localhost:8080/api/hello
+Accept: text/plain
+
+### GET helloRemote
+GET http://localhost:8080/api/helloRemote
+Accept: application/json

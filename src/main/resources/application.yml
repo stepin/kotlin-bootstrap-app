@@ -1,2 +1,36 @@
 greeting:
   message: "hello"
+
+quarkus:
+  datasource:
+    db-kind: postgresql
+    username: kotlin-bootstrap-app
+    password: SomeP2assword!@e
+    jdbc:
+      url: jdbc:postgresql://127.0.0.1:55000/kotlin-bootstrap-app_dev
+      min-size: 1
+      max-size: 16
+    reactive: false
+  #    reactive:
+  #      url: postgresql://127.0.0.1:55000/kotlin-bootstrap-app_dev
+  #      min-size: 1
+  #      max-size: 16
+  rest-client:
+    logging:
+      scope: request-response
+      body-limit: 1024
+  log:
+    min-level: TRACE
+    level: INFO
+    category:
+      "io.quarkiverse.jooq.sql.SqlLoggerListener":
+        level: TRACE
+      "name.stepin":
+        level: DEBUG
+      "org.jboss.resteasy.reactive.client.logging":
+        level: DEBUG
+  flyway:
+    migrate-at-start: true
+    baseline-on-migrate: true
+  jooq:
+    dialect: Postgres

@@ -10,4 +10,4 @@ pluginManagement {
         id(quarkusPluginId) version quarkusPluginVersion
     }
 }
-rootProject.name="kotlin-bootstrap-app"
+rootProject.name = "kotlin-bootstrap-app"
