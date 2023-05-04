@@ -1,0 +1,53 @@
+greeting:
+  message: "hello"
+
+spring:
+  datasource:
+    url: jdbc:postgresql://127.0.0.1:55000/kotlin-bootstrap-app_dev
+    username: kotlin-bootstrap-app
+    password: SomeP2assword!@e
+  r2dbc:
+    url: r2dbc:postgresql://127.0.0.1:55000/kotlin-bootstrap-app_dev
+    username: kotlin-bootstrap-app
+    password: SomeP2assword!@e
+  profiles:
+    active: dev
+  main:
+    banner-mode: off
+  jackson:
+    default-property-inclusion: non_null
+
+server:
+  shutdown: graceful
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, env, configprops, loggers, flyway, metrics, prometheus, openapi, swagger-ui, beans
+  endpoint:
+    health:
+      probes:
+        enabled: true
+      show-details: always
+      group:
+        readiness:
+          include:
+            - readinessState
+        liveness:
+          include:
+            - livenessState
+            - diskSpace
+  server:
+    port: 8081
+
+springdoc:
+  use-management-port: true
+
+logging:
+  level:
+    name.stepin: debug
+    org.jooq.tools.LoggerListener: debug
+    io.r2dbc.postgresql.PARAM: debug
+    io.r2dbc.postgresql.QUERY: debug
+    root: info

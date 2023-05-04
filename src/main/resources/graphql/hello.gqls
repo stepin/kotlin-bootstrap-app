@@ -1,0 +1,14 @@
+type HelloRemoteResult {
+    status: ResultStatus!
+    message: String!
+}
+
+enum ResultStatus {
+    SUCCESS, ERROR
+}
+
+type Query {
+    sayHello(name:String!): String!
+    helloRemote: HelloRemoteResult!
+    hello2: String!
+}
