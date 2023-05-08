@@ -47,6 +47,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8")
+    implementation(libs.log4j.kotlin)
 
     // Postgres
     implementation("org.postgresql:postgresql")
@@ -68,9 +69,6 @@ dependencies {
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     runtimeOnly("io.micrometer:micrometer-registry-prometheus")
     implementation(libs.springdoc.webflux.ui)
-
-    // Kotlin logging
-    implementation(libs.log4j.kotlin)
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("io.projectreactor:reactor-test")

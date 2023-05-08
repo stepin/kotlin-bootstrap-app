@@ -12,7 +12,7 @@ docker run -d --name "sonarqube" \
 
 echo http://localhost:9000
 echo 1. login admin:admin
-echo 2. manaully create project
+echo 2. manually create project
 echo 3. create local token
 echo 4. update gradle with new token value
 

@@ -42,7 +42,7 @@ management:
     port: 8081
 
 springdoc:
-  use-management-port: true
+  use-management-port: false
 
 logging:
   level:
