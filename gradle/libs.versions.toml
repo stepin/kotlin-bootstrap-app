@@ -31,3 +31,4 @@ ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlintGradle" }
 axion-release = { id = "pl.allegro.tech.build.axion-release", version.ref = "axionRelease" }
 task-tree = { id = "com.dorongold.task-tree", version = "2.1.1" }
 jib = { id = "com.google.cloud.tools.jib", version.ref = "jib" }
+flyway = { id = "org.flywaydb.flyway", version = "9.8.1" }

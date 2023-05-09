@@ -13,6 +13,7 @@ plugins {
     alias(libs.plugins.kover)
     alias(libs.plugins.dokka)
     alias(libs.plugins.sonar)
+    alias(libs.plugins.flyway)
     alias(libs.plugins.jooq)
     alias(libs.plugins.ktlint)
     alias(libs.plugins.axion.release)
@@ -96,6 +97,13 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+flyway {
+    url = "jdbc:postgresql://127.0.0.1:55000/kotlin-bootstrap-app_dev"
+    user = "kotlin-bootstrap-app"
+    password = "SomeP2assword!@e"
+    schemas = arrayOf("public")
 }
 
 jooq {
