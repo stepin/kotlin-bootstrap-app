@@ -6,7 +6,7 @@ import io.mockk.junit5.MockKExtension
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.runBlocking
 import name.stepin.client.quarkus.extensions.QuarkusExtensionsClient
-import name.stepin.config.GreetingConfig
+import name.stepin.config.AppConfig
 import name.stepin.db.dao.UsersDao
 import name.stepin.db.repository.UserRepository
 import name.stepin.fixture.UserEntityFactory.userEntity
@@ -29,19 +29,19 @@ internal class HelloServiceTest {
     lateinit var quarkusExtensionsClient: QuarkusExtensionsClient
 
     @MockK
-    lateinit var greetingConfig: GreetingConfig
+    lateinit var appConfig: AppConfig
 
     @MockK
     lateinit var userRepository: UserRepository
 
     @BeforeEach
     fun setUp() {
-        service = HelloService(usersDao, quarkusExtensionsClient, greetingConfig, userRepository)
+        service = HelloService(usersDao, quarkusExtensionsClient, appConfig, userRepository)
     }
 
     @AfterEach
     fun tearDown() {
-        confirmVerified(usersDao, quarkusExtensionsClient, greetingConfig, userRepository)
+        confirmVerified(usersDao, quarkusExtensionsClient, appConfig, userRepository)
     }
 
     @Test
@@ -53,7 +53,7 @@ internal class HelloServiceTest {
         coEvery { usersDao.newRecord() } returns usersRecord(1000)
         coEvery { userRepository.findByDisplayName("User1") } returns userEntity(1)
         coEvery { userRepository.findAllByEmailContains("@example.com") } returns flowOf()
-        every { greetingConfig.message } returns "greetingMessage1"
+        every { appConfig.baseUrl } returns "greetingMessage1"
         val expected = """
             dao1:2
             dao2:null
@@ -74,7 +74,7 @@ internal class HelloServiceTest {
         coVerify(exactly = 1) { usersDao.getAllEmails() }
         coVerify(exactly = 1) { userRepository.findByDisplayName("User1") }
         coVerify(exactly = 1) { userRepository.findAllByEmailContains("@example.com") }
-        verify(exactly = 1) { greetingConfig.message }
+        verify(exactly = 1) { appConfig.baseUrl }
     }
 
     @Test
@@ -89,7 +89,7 @@ internal class HelloServiceTest {
         coEvery { usersDao.newRecord() } returns usersRecord(1000)
         coEvery { userRepository.findByDisplayName("User1") } returns userEntity(1)
         coEvery { userRepository.findAllByEmailContains("@example.com") } returns flowOf(userEntity(1))
-        every { greetingConfig.message } returns "greetingMessage1"
+        every { appConfig.baseUrl } returns "greetingMessage1"
         val expected = """
             dao1:2
             dao2:2
@@ -110,7 +110,7 @@ internal class HelloServiceTest {
         coVerify(exactly = 1) { usersDao.getAllEmails() }
         coVerify(exactly = 1) { userRepository.findByDisplayName("User1") }
         coVerify(exactly = 1) { userRepository.findAllByEmailContains("@example.com") }
-        verify(exactly = 1) { greetingConfig.message }
+        verify(exactly = 1) { appConfig.baseUrl }
     }
 
     @Test

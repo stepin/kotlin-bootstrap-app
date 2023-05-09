@@ -5,7 +5,7 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.fold
 import name.stepin.client.quarkus.extensions.QuarkusExtensionsClient
-import name.stepin.config.GreetingConfig
+import name.stepin.config.AppConfig
 import name.stepin.db.dao.UsersDao
 import name.stepin.db.repository.UserRepository
 import org.apache.logging.log4j.kotlin.Logging
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service
 class HelloService(
     private val usersDao: UsersDao,
     private val quarkusExtensionsClient: QuarkusExtensionsClient,
-    private val greetingConfig: GreetingConfig,
+    private val appConfig: AppConfig,
     private val userRepository: UserRepository,
 ) {
     companion object : Logging
@@ -38,7 +38,7 @@ class HelloService(
             rep1:${rep1.await()}
             rep2:${rep2.await()}
         """.trimIndent()
-        logger.debug { "hello1 result $hello ${greetingConfig.message}" }
+        logger.debug { "hello1 result $hello ${appConfig.baseUrl}" }
         return@coroutineScope hello
     }
 
