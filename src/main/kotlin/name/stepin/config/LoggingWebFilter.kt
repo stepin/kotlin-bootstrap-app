@@ -15,8 +15,6 @@ import org.springframework.web.server.WebFilter
 import org.springframework.web.server.WebFilterChain
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
-import java.io.ByteArrayOutputStream
-import java.nio.channels.Channels
 
 // Based on https://github.com/Baeldung/kotlin-tutorials/tree/master/spring-reactive-kotlin
 @Component
@@ -71,23 +69,14 @@ class LoggingResponseDecorator(
     override fun writeWith(body: Publisher<out DataBuffer>): Mono<Void> {
         return super.writeWith(
             Flux.from(body)
-                .doOnNext { buffer: DataBuffer ->
+                .doOnNext {
                     logger.debug {
                         val code = delegate.statusCode
-                        val bodyStr = getBody(buffer)
-                        val headers = delegate.headers.asString()
                         val elapsed = System.currentTimeMillis() - startMillis
-                        "response: ${elapsed}ms $code $bodyStr\n$headers"
+                        "response: ${elapsed}ms $code"
                     }
                 },
         )
-    }
-
-    private fun getBody(buffer: DataBuffer): String {
-        val bodyStream = ByteArrayOutputStream()
-        val channel = Channels.newChannel(bodyStream)
-        buffer.readableByteBuffers().forEach { channel.write(it) }
-        return String(bodyStream.toByteArray())
     }
 }
 
