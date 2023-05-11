@@ -4,4 +4,5 @@ set -xeEuo pipefail
 
 cd ..
 
+export SONAR_SCANNER_OPTS="-Xmx512m"
 ./gradlew sonar
