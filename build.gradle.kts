@@ -1,6 +1,7 @@
 import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jooq.meta.jaxb.Logging
+import org.yaml.snakeyaml.Yaml
 import java.net.URL
 
 @Suppress("DSL_SCOPE_VIOLATION")
@@ -28,6 +29,12 @@ java.sourceCompatibility = JavaVersion.VERSION_17
 configurations {
     compileOnly {
         extendsFrom(configurations.annotationProcessor.get())
+    }
+}
+
+buildscript {
+    dependencies {
+        classpath("org.yaml:snakeyaml:2.0")
     }
 }
 
@@ -100,10 +107,16 @@ tasks.withType<Test> {
     systemProperty("spring.profiles.active", "test")
 }
 
+val cfg: Map<String, Map<String, Map<String, String>>> = Yaml().load(
+    File("src/main/resources/application.yml").bufferedReader(),
+)
+val jdbcCfg: Map<String, String> = cfg["spring"]?.get("datasource") ?: emptyMap()
+val r2dbcCfg: Map<String, String> = cfg["spring"]?.get("r2dbc") ?: emptyMap()
+
 flyway {
-    url = "jdbc:postgresql://127.0.0.1:55000/kotlin-bootstrap-app_dev"
-    user = "kotlin-bootstrap-app"
-    password = "SomeP2assword!@e"
+    url = r2dbcCfg["url"]
+    user = r2dbcCfg["username"]
+    password = r2dbcCfg["password"]
     schemas = arrayOf("public")
 }
 
@@ -114,9 +127,9 @@ jooq {
                 logging = Logging.WARN
                 jdbc.apply {
                     driver = "org.postgresql.Driver"
-                    url = "jdbc:postgresql://127.0.0.1:55000/kotlin-bootstrap-app_dev"
-                    user = "kotlin-bootstrap-app"
-                    password = "SomeP2assword!@e"
+                    url = jdbcCfg["url"]
+                    user = jdbcCfg["username"]
+                    password = jdbcCfg["password"]
                 }
                 generator.apply {
                     name = "org.jooq.codegen.KotlinGenerator"
