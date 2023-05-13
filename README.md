@@ -18,6 +18,8 @@
 Разницу между https://start.spring.io и тем, что получилось после ручной доработки можно легко проверить
 по истории комитов.
 
+Пофайловое описание шаблона есть в этом видео: https://www.youtube.com/watch?v=DF6aJMccSo0
+
 Обычно в этом разделе кратко описывается само приложение и его взаимосвязи.
 
 ## Tech stack
@@ -65,3 +67,8 @@ The application can be packaged using:
 ```shell script
 ./bin/build-docker.sh
 ```
+
+## TODO
+
+- генерация/синхронизация Spring Data Entity-классов из схемы БД -- Idea и JPA Buddy не видят JPA и не работают
+- динамическая генерация схемы GraphQL для Spring Boot GraphLQ по аналогии с OpenAPI
