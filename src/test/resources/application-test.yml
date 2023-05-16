@@ -1,0 +1,6 @@
+# Dedicated dynamic DBs for tests (R2DBC don't work -- 1 container for 2 URLs are not supported, only 1)
+spring:
+    datasource:
+        url: jdbc:tc:postgresql:15.2:///kotlin-bootstrap-app_test
+    r2dbc:
+        url: r2dbc:tc:postgresql:///kotlin-bootstrap-app_test?TC_IMAGE_TAG=15.2
