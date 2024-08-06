@@ -6,5 +6,6 @@ data class HelloRemoteResult(
 )
 
 enum class ResultStatus {
-    SUCCESS, ERROR
+    SUCCESS,
+    ERROR,
 }

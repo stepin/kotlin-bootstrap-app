@@ -6,9 +6,9 @@ import org.postgresql.ds.PGSimpleDataSource
 import org.testcontainers.containers.PostgreSQLContainer
 
 object PostgresFactory {
-
-    fun postgres(): PostgreSQLContainer<*> = PostgreSQLContainer("postgres:15.2")
-        .withReuse(true)
+    fun postgres(): PostgreSQLContainer<*> =
+        PostgreSQLContainer("postgres:15.2")
+            .withReuse(true)
 
     fun dslContext(postgres: PostgreSQLContainer<*>) = DSL.using(postgres.createConnection(""))
 
@@ -22,10 +22,11 @@ object PostgresFactory {
     fun initDb(postgres: PostgreSQLContainer<*>) {
         Thread.sleep(2000)
 
-        val flyway = Flyway.configure()
-            .schemas("public")
-            .dataSource(dataSource(postgres))
-            .load()
+        val flyway =
+            Flyway.configure()
+                .schemas("public")
+                .dataSource(dataSource(postgres))
+                .load()
 
         flyway.migrate()
     }

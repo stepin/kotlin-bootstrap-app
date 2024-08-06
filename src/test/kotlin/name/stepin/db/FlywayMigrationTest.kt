@@ -10,7 +10,6 @@ import java.lang.Thread.sleep
 
 @Testcontainers
 class FlywayMigrationTest {
-
     @Container
     var postgres = postgres()
 
@@ -19,10 +18,11 @@ class FlywayMigrationTest {
         // waiting for Postgres to start (looks like default waiting strategy is buggy)
         sleep(2000)
 
-        val flyway = Flyway.configure()
-            .schemas("public")
-            .dataSource(dataSource(postgres))
-            .load()
+        val flyway =
+            Flyway.configure()
+                .schemas("public")
+                .dataSource(dataSource(postgres))
+                .load()
 
         flyway.info()
 

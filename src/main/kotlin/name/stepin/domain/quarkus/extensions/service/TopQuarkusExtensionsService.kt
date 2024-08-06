@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service
 class TopQuarkusExtensionsService(
     private val client: QuarkusExtensionsNamesClient,
 ) {
-
     suspend fun getTopExtension(): ExtensionName? {
         return client.getNames().firstOrNull()
     }

@@ -21,7 +21,6 @@ import org.springframework.web.util.UriComponentsBuilder
 @ExtendWith(MockKExtension::class)
 @WebFluxTest(controllers = [GreetingController::class])
 class GreetingControllerTest {
-
     @MockkBean
     private lateinit var helloService: HelloService
 
@@ -37,10 +36,11 @@ class GreetingControllerTest {
     fun `hello 404 case`() {
         coEvery { helloService.hello() } throws EntityNotFoundException()
 
-        val response = client.get()
-            .uri("/api/hello?name=myName1")
-            .accept(MediaType.TEXT_PLAIN)
-            .exchange()
+        val response =
+            client.get()
+                .uri("/api/hello?name=myName1")
+                .accept(MediaType.TEXT_PLAIN)
+                .exchange()
 
         response
             .expectStatus().isNotFound
@@ -49,10 +49,11 @@ class GreetingControllerTest {
 
     @Test
     fun `hello constraints violation case`() {
-        val response = client.get()
-            .uri("/api/hello?name=n1")
-            .accept(MediaType.TEXT_PLAIN)
-            .exchange()
+        val response =
+            client.get()
+                .uri("/api/hello?name=n1")
+                .accept(MediaType.TEXT_PLAIN)
+                .exchange()
 
         response
             .expectStatus().isBadRequest
@@ -62,10 +63,11 @@ class GreetingControllerTest {
     fun `hello main case`() {
         coEvery { helloService.hello() } returns "hello1"
 
-        val response = client.get()
-            .uri("/api/hello?name=myName1")
-            .accept(MediaType.TEXT_PLAIN)
-            .exchange()
+        val response =
+            client.get()
+                .uri("/api/hello?name=myName1")
+                .accept(MediaType.TEXT_PLAIN)
+                .exchange()
 
         response
             .expectStatus().isOk
@@ -80,10 +82,11 @@ class GreetingControllerTest {
     fun `helloRemote main case`() {
         coEvery { helloService.helloRemote() } returns "hello1"
 
-        val response = client.get()
-            .uri("/api/helloRemote")
-            .accept(MediaType.APPLICATION_JSON)
-            .exchange()
+        val response =
+            client.get()
+                .uri("/api/helloRemote")
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
 
         response
             .expectStatus().isOk
@@ -101,22 +104,24 @@ class GreetingControllerTest {
     @Test
     fun `testArguments main case`() {
         @Language("JSON")
-        val body = """
+        val body =
+            """
             {
             "some-thing": "some-value-1"
             }
-        """.trimIndent()
-        val response = client.post()
-            .uri(
-                UriComponentsBuilder.fromUriString("/api/hello/1234")
-                    .queryParam("myQueryParam", "value1")
-                    .build().toUri(),
-            )
-            .header("my-header", "value1")
-            .contentType(MediaType.APPLICATION_JSON)
-            .bodyValue(body)
-            .accept(MediaType.APPLICATION_JSON)
-            .exchange()
+            """.trimIndent()
+        val response =
+            client.post()
+                .uri(
+                    UriComponentsBuilder.fromUriString("/api/hello/1234")
+                        .queryParam("myQueryParam", "value1")
+                        .build().toUri(),
+                )
+                .header("my-header", "value1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(body)
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
 
         response
             .expectStatus().isOk

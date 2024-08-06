@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Configuration
 
 @Configuration
 class OpenApiConfig {
-
     @Bean
     fun openapi(): OpenAPI {
         return OpenAPI()
@@ -17,7 +16,7 @@ class OpenApiConfig {
                     .title("Kotlin Bootstrap App API")
                     .description(
                         """
-                            Some long description.
+                        Some long description.
                         """.trimIndent(),
                     ),
             )

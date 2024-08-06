@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service
 class QuarkusExtensionsNamesClient(
     private val client: QuarkusExtensionsClient,
 ) {
-
     suspend fun getNames(): List<ExtensionName> {
         return client.getExtensionsById("io.quarkus:quarkus-resteasy-reactive")
             .map { ExtensionName(it.name) }

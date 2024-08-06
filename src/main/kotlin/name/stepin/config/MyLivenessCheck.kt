@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component
 
 @Component
 class MyLivenessCheck : HealthIndicator {
-
     override fun health(): Health {
         return Health.up().status("alive").build()
     }

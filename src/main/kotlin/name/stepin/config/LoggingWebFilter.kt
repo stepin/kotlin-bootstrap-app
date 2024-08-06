@@ -21,7 +21,10 @@ import reactor.core.publisher.Mono
 class LoggingWebFilter : WebFilter {
     companion object : Logging
 
-    override fun filter(exchange: ServerWebExchange, chain: WebFilterChain): Mono<Void> {
+    override fun filter(
+        exchange: ServerWebExchange,
+        chain: WebFilterChain,
+    ): Mono<Void> {
         val startMillis = System.currentTimeMillis()
 
         return chain.filter(LoggingWebExchange(startMillis, exchange)).doOnSuccess {
@@ -39,6 +42,7 @@ class LoggingWebExchange(
     private val responseDecorator = LoggingResponseDecorator(startMillis, delegate.response)
 
     override fun getRequest() = requestDecorator
+
     override fun getResponse() = responseDecorator
 }
 
@@ -80,7 +84,8 @@ class LoggingResponseDecorator(
     }
 }
 
-fun HttpHeaders.asString() = entries
-    .joinToString("\n") { pair ->
-        " ${pair.key}: [${pair.value.joinToString(";")}]"
-    }
+fun HttpHeaders.asString() =
+    entries
+        .joinToString("\n") { pair ->
+            " ${pair.key}: [${pair.value.joinToString(";")}]"
+        }

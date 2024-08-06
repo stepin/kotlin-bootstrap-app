@@ -10,8 +10,10 @@ import org.springframework.stereotype.Component
 
 @Component
 class GraphqlExceptionHandler : DataFetcherExceptionResolverAdapter() {
-
-    override fun resolveToSingleError(ex: Throwable, env: DataFetchingEnvironment): GraphQLError? {
+    override fun resolveToSingleError(
+        ex: Throwable,
+        env: DataFetchingEnvironment,
+    ): GraphQLError? {
         return if (ex is ConstraintViolationException) {
             GraphqlErrorBuilder.newError()
                 .errorType(ErrorType.ValidationError)

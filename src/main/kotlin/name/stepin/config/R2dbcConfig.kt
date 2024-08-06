@@ -15,7 +15,6 @@ import org.springframework.data.r2dbc.repository.config.EnableR2dbcRepositories
 class R2dbcConfig(
     private val r2dbcProperties: R2dbcProperties,
 ) : AbstractR2dbcConfiguration() {
-
     override fun connectionFactory(): ConnectionFactory {
         return ConnectionFactories.get(
             ConnectionFactoryOptions

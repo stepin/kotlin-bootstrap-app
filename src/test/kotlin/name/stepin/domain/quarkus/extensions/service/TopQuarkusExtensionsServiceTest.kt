@@ -32,26 +32,29 @@ class TopQuarkusExtensionsServiceTest {
     }
 
     @Test
-    fun `getTopExtension empty case`() = runBlocking {
-        coEvery { quarkusExtensionsNamesClient.getNames() } returns listOf()
+    fun `getTopExtension empty case`() =
+        runBlocking {
+            coEvery { quarkusExtensionsNamesClient.getNames() } returns listOf()
 
-        val actual = service.getTopExtension()
+            val actual = service.getTopExtension()
 
-        assertEquals(null, actual)
-        coVerify(exactly = 1) { quarkusExtensionsNamesClient.getNames() }
-    }
+            assertEquals(null, actual)
+            coVerify(exactly = 1) { quarkusExtensionsNamesClient.getNames() }
+        }
 
     @Test
-    fun `getTopExtension main case`() = runBlocking {
-        val expected = ExtensionName("extensionName1")
-        coEvery { quarkusExtensionsNamesClient.getNames() } returns listOf(
-            expected,
-            ExtensionName("extensionName2"),
-        )
+    fun `getTopExtension main case`() =
+        runBlocking {
+            val expected = ExtensionName("extensionName1")
+            coEvery { quarkusExtensionsNamesClient.getNames() } returns
+                listOf(
+                    expected,
+                    ExtensionName("extensionName2"),
+                )
 
-        val actual = service.getTopExtension()
+            val actual = service.getTopExtension()
 
-        assertEquals(expected, actual)
-        coVerify(exactly = 1) { quarkusExtensionsNamesClient.getNames() }
-    }
+            assertEquals(expected, actual)
+            coVerify(exactly = 1) { quarkusExtensionsNamesClient.getNames() }
+        }
 }

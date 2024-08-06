@@ -19,7 +19,6 @@ import org.testcontainers.junit.jupiter.Testcontainers
 
 @Testcontainers
 internal class UsersDaoTest {
-
     @Container
     var postgres = postgres()
 
@@ -57,41 +56,47 @@ internal class UsersDaoTest {
     }
 
     @Test
-    fun `getAllEmails main case`() = runBlocking {
-        val actual = buildString { dao.getAllEmails().collect { append(it).append(", ") } }
+    fun `getAllEmails main case`() =
+        runBlocking {
+            val actual = buildString { dao.getAllEmails().collect { append(it).append(", ") } }
 
-        assertEquals("me1@example.com, me2@example.com, ", actual)
-    }
-
-    @Test
-    fun `getAll main case`() = runBlocking {
-        val actual = dao.getAll()
-
-        assertEquals("1,2", actual.joinToString(",") { it.id.toString() })
-    }
+            assertEquals("me1@example.com, me2@example.com, ", actual)
+        }
 
     @Test
-    fun `byId not found case`(): Unit = runBlocking {
-        assertThrows<EntityNotFoundException> { dao.byId(3) }
-    }
+    fun `getAll main case`() =
+        runBlocking {
+            val actual = dao.getAll()
+
+            assertEquals("1,2", actual.joinToString(",") { it.id.toString() })
+        }
 
     @Test
-    fun `byId main case`() = runBlocking {
-        val actual = dao.byId(2)
-        assertEquals(2, actual.id)
-    }
+    fun `byId not found case`(): Unit =
+        runBlocking {
+            assertThrows<EntityNotFoundException> { dao.byId(3) }
+        }
 
     @Test
-    fun `byIdNullable not found case`(): Unit = runBlocking {
-        val actual = dao.byIdNullable(3)
-        assertEquals(null, actual)
-    }
+    fun `byId main case`() =
+        runBlocking {
+            val actual = dao.byId(2)
+            assertEquals(2, actual.id)
+        }
 
     @Test
-    fun `byIdNullable main case`() = runBlocking {
-        val actual = dao.byIdNullable(2)
-        assertEquals(2, actual?.id)
-    }
+    fun `byIdNullable not found case`(): Unit =
+        runBlocking {
+            val actual = dao.byIdNullable(3)
+            assertEquals(null, actual)
+        }
+
+    @Test
+    fun `byIdNullable main case`() =
+        runBlocking {
+            val actual = dao.byIdNullable(2)
+            assertEquals(2, actual?.id)
+        }
 
     @Test
     fun `newRecord main case`() {

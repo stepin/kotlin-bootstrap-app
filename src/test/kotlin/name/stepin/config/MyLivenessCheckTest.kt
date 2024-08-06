@@ -8,7 +8,6 @@ import org.springframework.boot.actuate.health.HealthIndicator
 import org.springframework.stereotype.Component
 
 class MyLivenessCheckTest {
-
     @Test
     fun `MyLivenessCheck should have Component annotation`() {
         val clazz = MyLivenessCheck::class.java

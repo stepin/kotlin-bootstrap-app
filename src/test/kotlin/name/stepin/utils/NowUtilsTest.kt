@@ -6,7 +6,6 @@ import java.time.Duration
 import java.time.LocalDate
 
 class NowUtilsTest {
-
     @Test
     fun `nowLocalDate return local time in UTC`() {
         val now = LocalDate.now()

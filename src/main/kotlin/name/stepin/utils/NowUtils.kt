@@ -5,6 +5,5 @@ import java.time.LocalDate
 
 @Component
 class NowUtils {
-
     fun nowLocalDate(): LocalDate = LocalDate.now()
 }

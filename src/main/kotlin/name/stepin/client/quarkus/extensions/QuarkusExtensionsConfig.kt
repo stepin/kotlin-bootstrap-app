@@ -6,10 +6,10 @@ import org.springframework.context.annotation.Configuration
 
 @Configuration
 class QuarkusExtensionsConfig {
-
     @Bean
-    fun personService() = WebClientFactory.createClient(
-        baseUrl = "https://stage.code.quarkus.io/api",
-        serviceType = QuarkusExtensionsClient::class.java,
-    )
+    fun personService() =
+        WebClientFactory.createClient(
+            baseUrl = "https://stage.code.quarkus.io/api",
+            serviceType = QuarkusExtensionsClient::class.java,
+        )
 }

@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 
 @RestControllerAdvice
 class WebExceptionHandler {
-
     @ExceptionHandler(EntityNotFoundException::class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     fun handleEntityNotFoundException(ex: EntityNotFoundException): ResponseEntity<String> {

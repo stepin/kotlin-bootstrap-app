@@ -23,7 +23,6 @@ import org.springframework.graphql.test.tester.GraphQlTester
 @ExtendWith(MockKExtension::class)
 @AutoConfigureGraphQlTester
 class HelloGraphQLTest {
-
     @MockkBean
     private lateinit var helloService: HelloService
 
@@ -38,15 +37,17 @@ class HelloGraphQLTest {
     @Test
     fun `sayHello failed name validation case`() {
         @Language("GraphQL")
-        val document = """
+        val document =
+            """
             query sayHello(${'$'}name: String!){
                 sayHello(name : ${'$'}name)
             }
-        """.trimIndent()
+            """.trimIndent()
 
-        val response = graphQlTester.document(document)
-            .variable("name", "n1")
-            .execute()
+        val response =
+            graphQlTester.document(document)
+                .variable("name", "n1")
+                .execute()
 
         response.errors()
             .expect {
@@ -61,19 +62,21 @@ class HelloGraphQLTest {
     @Test
     fun `sayHello main case`() {
         @Language("GraphQL")
-        val document = """
+        val document =
+            """
             query sayHello(${'$'}name: String!){
                 sayHello(name : ${'$'}name)
             }
-        """.trimIndent()
+            """.trimIndent()
         coEvery { helloService.hello() } returns "hello1"
 
-        val actual = graphQlTester.document(document)
-            .variable("name", "name1")
-            .execute()
-            .path("$.data.sayHello")
-            .entity(String::class.java)
-            .get()
+        val actual =
+            graphQlTester.document(document)
+                .variable("name", "name1")
+                .execute()
+                .path("$.data.sayHello")
+                .entity(String::class.java)
+                .get()
 
         assertEquals("Hello GraphQL name1, hello1", actual)
         coVerify(exactly = 1) { helloService.hello() }
@@ -82,21 +85,24 @@ class HelloGraphQLTest {
     @Test
     fun `helloRemote main case`() {
         @Language("GraphQL")
-        val document = """
+        val document =
+            """
             query {
                 helloRemote { message status }
             }
-        """.trimIndent()
-        val expected = HelloRemoteResult(
-            status = ResultStatus.SUCCESS,
-            message = "helloRemote1",
-        )
+            """.trimIndent()
+        val expected =
+            HelloRemoteResult(
+                status = ResultStatus.SUCCESS,
+                message = "helloRemote1",
+            )
         coEvery { helloService.helloRemote() } returns "helloRemote1"
 
-        val response = graphQlTester.document(document)
-            .execute()
-            .path("$.data.helloRemote")
-            .entity(HelloRemoteResult::class.java)
+        val response =
+            graphQlTester.document(document)
+                .execute()
+                .path("$.data.helloRemote")
+                .entity(HelloRemoteResult::class.java)
 
         response.isEqualTo(expected)
         coVerify(exactly = 1) { helloService.helloRemote() }
@@ -105,16 +111,18 @@ class HelloGraphQLTest {
     @Test
     fun `hello2 main case`() {
         @Language("GraphQL")
-        val document = """
+        val document =
+            """
             query {
                 hello2
             }
-        """.trimIndent()
+            """.trimIndent()
 
-        val response = graphQlTester.document(document)
-            .execute()
-            .path("$.data.hello2")
-            .entity(String::class.java)
+        val response =
+            graphQlTester.document(document)
+                .execute()
+                .path("$.data.hello2")
+                .entity(String::class.java)
 
         response.isEqualTo("hello2")
     }

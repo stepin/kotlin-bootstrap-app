@@ -5,12 +5,15 @@ import org.springframework.web.reactive.function.client.support.WebClientAdapter
 import org.springframework.web.service.invoker.HttpServiceProxyFactory
 
 object WebClientFactory {
-
-    fun <S> createClient(baseUrl: String, serviceType: Class<S>): S {
+    fun <S> createClient(
+        baseUrl: String,
+        serviceType: Class<S>,
+    ): S {
         val client = webClient(baseUrl).build()
-        val proxyFactory = HttpServiceProxyFactory
-            .builder(WebClientAdapter.forClient(client))
-            .build()
+        val proxyFactory =
+            HttpServiceProxyFactory
+                .builder(WebClientAdapter.forClient(client))
+                .build()
         return proxyFactory.createClient(serviceType)
     }
 
