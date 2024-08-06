@@ -1,16 +1,20 @@
 [versions]
 kotlin = "1.7.22"
-dokka = "1.7.20"
 springBoot = "3.0.6"
 springDependencyManagement = "1.1.0"
-graalvmNative = "0.9.20"
 springMockk = "4.0.2"
 springDoc = "2.1.0"
 archunit = "1.0.1"
 log4jKotlin = "1.2.0"
-ktlintGradle = "11.3.2"
-axionRelease = "1.15.0"
+ktlintGradle = "12.1.1"
+axionRelease = "1.18.0"
 wiremock = "2.35.0"
+kover = "0.6.1"
+sonar = "4.0.0.2929"
+taskTree = "2.1.1"
+flyway= "9.8.1"
+jooq = "8.2"
+dokka = "1.7.20"
 jib = "3.3.1"
 
 [libraries]
@@ -23,12 +27,12 @@ wiremock = { module = "com.github.tomakehurst:wiremock-jre8-standalone", version
 springdoc-webflux-ui = { module = "org.springdoc:springdoc-openapi-starter-webflux-ui", version.ref = "springDoc" }
 
 [plugins]
-kover = { id = "org.jetbrains.kotlinx.kover", version = "0.6.1" }
-jooq = { id = "nu.studer.jooq", version = "8.2" }
-dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
-sonar = { id = "org.sonarqube", version = "4.0.0.2929" }
+kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
+sonar = { id = "org.sonarqube", version.ref = "sonar" }
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlintGradle" }
 axion-release = { id = "pl.allegro.tech.build.axion-release", version.ref = "axionRelease" }
-task-tree = { id = "com.dorongold.task-tree", version = "2.1.1" }
+task-tree = { id = "com.dorongold.task-tree", version.ref = "taskTree" }
+flyway = { id = "org.flywaydb.flyway", version.ref = "flyway" }
+jooq = { id = "nu.studer.jooq", version.ref = "jooq" }
+dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 jib = { id = "com.google.cloud.tools.jib", version.ref = "jib" }
-flyway = { id = "org.flywaydb.flyway", version = "9.8.1" }

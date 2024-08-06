@@ -1,3 +1,9 @@
+# Metabase EditorConfig settings
+# http://editorconfig.org/
+
+# use the top most editor config file
+root = true
+
 [*]
 charset = utf-8
 end_of_line = lf
@@ -9,6 +15,8 @@ tab_width = 4
 trim_trailing_whitespace = true
 
 [{*.gradle.kts,*.kt,*.kts,*.main.kts,*.space.kts}]
+insert_final_newline = true
+trim_trailing_whitespace = true
 ij_kotlin_allow_trailing_comma = true
 ij_kotlin_allow_trailing_comma_on_call_site = true
-ktlint_disabled_rules = no-wildcard-imports
+ktlint_standard_no-wildcard-imports = disabled

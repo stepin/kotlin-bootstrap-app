@@ -1,30 +1,3 @@
-### TODO: all tech endpoints: health, swagger, ...
-
-### GET hello (bad request)
-GET http://localhost:8080/api/hello?name=my
-Accept: text/plain
-
-### GET hello
-GET http://localhost:8080/api/hello?name=myName1
-Accept: text/plain
-
-### GET helloRemote
-GET http://localhost:8080/api/helloRemote
-Accept: application/json
-
-### POST test params
-POST http://localhost:8080/api/hello/100?myQueryParam=100&otherParam=2
-Accept: application/json
-Content-Type: application/json
-my-header: header-value-1
-other-heaer: value-2
-
-{
-  "some-thing": "my content 1",
-  "other-thing": "content 2"
-}
-
-
 ### GraphQL schema
 POST http://localhost:8080/graphql
 Content-Type: application/json

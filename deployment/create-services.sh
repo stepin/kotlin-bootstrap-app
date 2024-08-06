@@ -19,7 +19,7 @@ podman create --name postgres \
 podman generate systemd --new --files --name postgres
 
 
-# kotlin-bootstrap-app
+# app
 
 mkdir -p /data/kotlin-bootstrap-app-images
 podman create --name kotlin-bootstrap-app \
