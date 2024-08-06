@@ -4,4 +4,4 @@ set -xeEuo pipefail
 
 cd ..
 
-./gradlew generateJooq
+./gradlew --stacktrace flywayMigrate

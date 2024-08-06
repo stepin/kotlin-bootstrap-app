@@ -26,13 +26,14 @@
 
 ## Tech stack
 
-- Kotlin 1.8
+- Kotlin 1.9
 - Spring Boot 3 (reactive with Kotlin co-routines)
 - Spring Data Repositories & jOOQ
 - JUnit 5 with mockk
-- Java 17
+- Java 21
 - Postgres
 - Docker
+- KBRE
 
 ## Dev links
 
@@ -58,8 +59,9 @@
 You can run your application in dev mode that enables live coding using:
 
 ```shell script
-./bin/start-postgres.sh
-./bin/run-dev.sh
+./bin/start-postgres
+./bin/generate-flyway
+./bin/run-dev
 ```
 
 ## Packaging and running the application
@@ -67,7 +69,7 @@ You can run your application in dev mode that enables live coding using:
 The application can be packaged using:
 
 ```shell script
-./bin/build-docker.sh
+./bin/build-docker
 ```
 
 ## TODO

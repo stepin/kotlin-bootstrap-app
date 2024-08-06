@@ -8,4 +8,4 @@ set -a
 [[ -f .env ]] && source .env
 set +a
 
-./gradlew bootRun
+./gradlew --stacktrace bootRun

@@ -4,7 +4,7 @@ set -xeEuo pipefail
 
 cd ..
 
-./gradlew dokkaHtml
+./gradlew --stacktrace dokkaHtml
 echo
 echo Docs:
 echo $(pwd)/build/dokka/html/index.html

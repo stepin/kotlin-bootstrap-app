@@ -1,30 +1,35 @@
 [versions]
-kotlin = "1.7.22"
-springBoot = "3.0.6"
-springDependencyManagement = "1.1.0"
+kotlin = "1.9.24"
+springBoot = "3.3.2"
+springDependencyManagement = "1.1.6"
 springMockk = "4.0.2"
-springDoc = "2.1.0"
-archunit = "1.0.1"
-log4jKotlin = "1.2.0"
+springDoc = "2.6.0"
+archunit = "1.3.0"
+log4jKotlin = "1.4.0"
 ktlintGradle = "12.1.1"
 axionRelease = "1.18.0"
-wiremock = "2.35.0"
-kover = "0.6.1"
-sonar = "4.0.0.2929"
-taskTree = "2.1.1"
-flyway= "9.8.1"
-jooq = "8.2"
-dokka = "1.7.20"
-jib = "3.3.1"
+wiremock = "3.9.1"
+kover = "0.8.3"
+sonar = "5.1.0.4882"
+taskTree = "4.0.0"
+testcontainers = "1.20.1"
+postgresql = "42.7.2"
+flyway= "10.17.0"
+jooq = "3.19.10"
+jooqKotlin = "3.19.10"
+dokka = "1.9.20"
+jib = "3.4.3"
 
 [libraries]
 mockk-spring = { module = "com.ninja-squad:springmockk", version.ref = "springMockk" }
 archunit = { module = "com.tngtech.archunit:archunit", version.ref = "archunit" }
 log4j-kotlin = { module = "org.apache.logging.log4j:log4j-api-kotlin", version.ref = "log4jKotlin" }
-# NOTE: standalone is temporary until javax/servlet/DispatcherType error will be fixed for Spring Boot 3
-wiremock = { module = "com.github.tomakehurst:wiremock-jre8-standalone", version.ref = "wiremock" }
-#wiremock = { module = "com.github.tomakehurst:wiremock-jre8", version.ref = "wiremock" }
+wiremock = { module = "org.wiremock:wiremock", version.ref = "wiremock" }
 springdoc-webflux-ui = { module = "org.springdoc:springdoc-openapi-starter-webflux-ui", version.ref = "springDoc" }
+postgresql = { module = "org.postgresql:postgresql",  version.ref = "postgresql" }
+flyway-postgresql = { module = "org.flywaydb:flyway-database-postgresql", version.ref = "flyway" }
+jooq-kotlin = { module = "org.jooq:jooq-kotlin",  version.ref = "jooqKotlin" }
+jooq-kotlin-coroutines = { module = "org.jooq:jooq-kotlin-coroutines",  version.ref = "jooqKotlin" }
 
 [plugins]
 kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
@@ -33,6 +38,6 @@ ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlintGradle" }
 axion-release = { id = "pl.allegro.tech.build.axion-release", version.ref = "axionRelease" }
 task-tree = { id = "com.dorongold.task-tree", version.ref = "taskTree" }
 flyway = { id = "org.flywaydb.flyway", version.ref = "flyway" }
-jooq = { id = "nu.studer.jooq", version.ref = "jooq" }
+jooq = { id = "org.jooq.jooq-codegen-gradle", version.ref = "jooq" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 jib = { id = "com.google.cloud.tools.jib", version.ref = "jib" }

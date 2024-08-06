@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -eEuo pipefail
+cd "$(dirname "$0")"
+
+cd ..
+
+docker run --rm -it -v "${PWD}:/git" -w /git --user "$(id -u)" stepin/git-parse-commits:2.2.2 releaseVersion
+echo
+docker run --rm -it -v "${PWD}:/git" -w /git --user "$(id -u)" stepin/git-parse-commits:2.2.2 releaseNotes

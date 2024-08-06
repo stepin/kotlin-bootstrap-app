@@ -14,8 +14,8 @@ extensions:
   - local-dev
   - systemd-deployment
 variables:
-  REPO: http://localhost:3000/stepin/kotlin-bootstrap-app/src/branch/main/src/main/kotlin
-  SONAR_HOST_URL: http://localhost:9000
+  REPO: 'http://localhost:3000/stepin/kotlin-bootstrap-app/src/branch/main/src/main/kotlin'
+  SONAR_HOST_URL: 'http://localhost:9000'
   SONAR_PROJECT_KEY: kotlin-bootstrap-app
   SONAR_PROJECT_NAME: kotlin-bootstrap-app
   SONAR_TOKEN: sqp_821b1d3209761625bdd29259674237d429bce626

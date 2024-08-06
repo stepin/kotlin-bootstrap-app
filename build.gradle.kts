@@ -1,30 +1,34 @@
+// FILE IS GENERATED AUTOMATICALLY BY kbre. DON'T EDIT MANUALLY.
 import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jooq.meta.jaxb.Logging
 import org.yaml.snakeyaml.Yaml
-import java.net.URL
+import java.net.URI
+
 
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     id("org.springframework.boot") version libs.versions.springBoot
     id("io.spring.dependency-management") version libs.versions.springDependencyManagement
-//    id("org.graalvm.buildtools.native") version libs.versions.graalvmNative
     kotlin("jvm") version libs.versions.kotlin
     kotlin("plugin.spring") version libs.versions.kotlin
     alias(libs.plugins.kover)
-    alias(libs.plugins.dokka)
     alias(libs.plugins.sonar)
-    alias(libs.plugins.flyway)
-    alias(libs.plugins.jooq)
     alias(libs.plugins.ktlint)
     alias(libs.plugins.axion.release)
-    alias(libs.plugins.jib)
     alias(libs.plugins.task.tree)
+    alias(libs.plugins.flyway)
+
+    alias(libs.plugins.jooq)
+
+    alias(libs.plugins.dokka)
+
+    alias(libs.plugins.jib)
 }
 
 group = "name.stepin"
 version = scmVersion.version
-java.sourceCompatibility = JavaVersion.VERSION_17
+java.sourceCompatibility = JavaVersion.VERSION_21
 
 configurations {
     compileOnly {
@@ -35,6 +39,7 @@ configurations {
 buildscript {
     dependencies {
         classpath("org.yaml:snakeyaml:2.0")
+        classpath(libs.flyway.postgresql)
     }
 }
 
@@ -42,7 +47,7 @@ repositories {
     mavenCentral()
 }
 
-extra["testcontainersVersion"] = "1.18.0"
+extra["testcontainersVersion"] = libs.versions.testcontainers.get()
 
 dependencies {
     // basic deps
@@ -57,20 +62,8 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8")
     implementation(libs.log4j.kotlin)
 
-    // Postgres
-    implementation("org.postgresql:postgresql")
-    implementation("org.postgresql:r2dbc-postgresql")
-    implementation("org.springframework:spring-jdbc")
-    implementation("org.flywaydb:flyway-core")
-    implementation("org.springframework.boot:spring-boot-starter-jooq")
-    implementation("org.jooq:jooq-kotlin")
-    implementation("org.jooq:jooq-kotlin-coroutines")
-    implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")
-    jooqGenerator("org.postgresql:postgresql:42.5.1")
-
     // HTTP server
     implementation("org.springframework.boot:spring-boot-starter-webflux")
-    implementation("org.springframework.boot:spring-boot-starter-graphql")
 
     // External information: health, metrics, apis
     implementation("org.springframework.boot:spring-boot-starter-actuator")
@@ -80,13 +73,24 @@ dependencies {
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("io.projectreactor:reactor-test")
-    testImplementation("org.springframework.graphql:spring-graphql-test")
     testImplementation("org.testcontainers:junit-jupiter")
-    testImplementation("org.testcontainers:postgresql")
-    testImplementation("org.testcontainers:r2dbc")
     testImplementation(libs.mockk.spring)
     testImplementation(libs.archunit)
     testImplementation(libs.wiremock)
+    implementation("org.springframework.boot:spring-boot-starter-graphql")
+    testImplementation("org.springframework.graphql:spring-graphql-test")
+
+    implementation("org.postgresql:postgresql")
+    implementation("org.postgresql:r2dbc-postgresql")
+    implementation("org.springframework:spring-jdbc")
+    implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")
+
+    testImplementation("org.testcontainers:postgresql")
+    testImplementation("org.testcontainers:r2dbc")
+    jooqCodegen(libs.postgresql)
+    implementation("org.springframework.boot:spring-boot-starter-jooq")
+    implementation(libs.jooq.kotlin)
+    implementation(libs.jooq.kotlin.coroutines)
 }
 
 dependencyManagement {
@@ -98,7 +102,7 @@ dependencyManagement {
 tasks.withType<KotlinCompile> {
     kotlinOptions {
         freeCompilerArgs = listOf("-Xjsr305=strict")
-        jvmTarget = "17"
+        jvmTarget = "21"
     }
 }
 
@@ -107,78 +111,8 @@ tasks.withType<Test> {
     systemProperty("spring.profiles.active", "test")
 }
 
-val cfg: Map<String, Map<String, Map<String, String>>> = Yaml().load(
-    File("src/main/resources/application.yml").bufferedReader(),
-)
-val jdbcCfg: Map<String, String> = cfg["spring"]?.get("datasource") ?: emptyMap()
-val r2dbcCfg: Map<String, String> = cfg["spring"]?.get("r2dbc") ?: emptyMap()
-
-flyway {
-    url = r2dbcCfg["url"]
-    user = r2dbcCfg["username"]
-    password = r2dbcCfg["password"]
-    schemas = arrayOf("public")
-}
-
-jooq {
-    configurations {
-        create("main") {
-            jooqConfiguration.apply {
-                logging = Logging.WARN
-                jdbc.apply {
-                    driver = "org.postgresql.Driver"
-                    url = jdbcCfg["url"]
-                    user = jdbcCfg["username"]
-                    password = jdbcCfg["password"]
-                }
-                generator.apply {
-                    name = "org.jooq.codegen.KotlinGenerator"
-                    database.apply {
-                        name = "org.jooq.meta.postgres.PostgresDatabase"
-                        inputSchema = "public"
-                    }
-                    generate.apply {
-                        isDeprecated = false
-                        isRecords = true
-                        isImmutablePojos = true
-                        isFluentSetters = true
-                    }
-                    target.apply {
-                        packageName = "name.stepin.db.sql"
-                        directory = "build/generated-src/jooq/main"
-                    }
-                    strategy.name = "org.jooq.codegen.DefaultGeneratorStrategy"
-                }
-            }
-        }
-    }
-}
-
-tasks.withType<DokkaTask>().configureEach {
-    dokkaSourceSets {
-        named("main") {
-            // used as project name in the header
-            moduleName.set("Kotlin Bootstrap App")
-
-            // contains descriptions for the module and the packages
-            // more info: https://kotlinlang.org/docs/dokka-module-and-package-docs.html
-            includes.from("packages.md")
-
-            // adds source links that lead to this repository, allowing readers
-            // to easily find source code for inspected declarations
-            val repo =
-                "http://localhost:3000/stepin/kotlin-bootstrap-app/src/branch/main/src/main/kotlin"
-            sourceLink {
-                localDirectory.set(file("src/main/kotlin"))
-                remoteUrl.set(URL(repo))
-                remoteLineSuffix.set("#L")
-            }
-        }
-    }
-}
-
 kover {
-    engine.set(kotlinx.kover.api.DefaultJacocoEngine)
+    useJacoco.set(true)
 }
 tasks.test {
     finalizedBy(tasks.koverXmlReport) // report is always generated after tests run
@@ -208,10 +142,79 @@ ktlint {
     }
 }
 
+val cfg: Map<String, Map<String, Map<String, String>>> =
+    Yaml().load(
+        File("src/main/resources/application.yml").bufferedReader(),
+    )
+val jdbcCfg: Map<String, String> = cfg["spring"]?.get("datasource") ?: emptyMap()
+
+flyway {
+    url = jdbcCfg["url"]
+    user = jdbcCfg["username"]
+    password = jdbcCfg["password"]
+    schemas = arrayOf("public")
+}
+
+jooq {
+    configurations {
+        create("main") {
+            configuration {
+                logging = Logging.WARN
+                jdbc {
+                    driver = "org.postgresql.Driver"
+                    url = jdbcCfg["url"]
+                    user = jdbcCfg["username"]
+                    password = jdbcCfg["password"]
+                }
+                generator {
+                    name = "org.jooq.codegen.KotlinGenerator"
+                    database {
+                        name = "org.jooq.meta.postgres.PostgresDatabase"
+                        inputSchema = "public"
+                    }
+                    generate {
+                        isDeprecated = false
+                        isRecords = true
+                        isImmutablePojos = true
+                        isFluentSetters = true
+                    }
+                    target {
+                        packageName = "name.stepin.db.sql"
+                        directory = "build/generated-src/jooq/main"
+                    }
+                }
+            }
+        }
+    }
+}
+
+tasks.withType<DokkaTask>().configureEach {
+    dokkaSourceSets {
+        named("main") {
+            // used as project name in the header
+            moduleName.set("Kotlin Bootstrap App")
+
+            // contains descriptions for the module and the packages
+            // more info: https://kotlinlang.org/docs/dokka-module-and-package-docs.html
+            includes.from("packages.md")
+
+            // adds source links that lead to this repository, allowing readers
+            // to easily find source code for inspected declarations
+            val repo =
+                "http://localhost:3000/stepin/kotlin-bootstrap-app/src/branch/main/src/main/kotlin"
+            sourceLink {
+                localDirectory.set(file("src/main/kotlin"))
+                remoteUrl.set(URI(repo).toURL())
+                remoteLineSuffix.set("#L")
+            }
+        }
+    }
+}
+
 // https://github.com/GoogleContainerTools/jib/tree/master/jib-gradle-plugin
 jib {
     from {
-        image = "azul/zulu-openjdk:17-jre"
+        image = "eclipse-temurin:21-jre"
     }
     to {
         image = "stepin/kotlin-bootstrap-app"
