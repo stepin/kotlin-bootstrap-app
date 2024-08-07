@@ -39,6 +39,7 @@ configurations {
 buildscript {
     dependencies {
         classpath("org.yaml:snakeyaml:2.0")
+
         classpath(libs.flyway.postgresql)
     }
 }
@@ -186,6 +187,12 @@ jooq {
             }
         }
     }
+}
+tasks.named("jooqCodegen") {
+    dependsOn(tasks.named("flywayMigrate"))
+}
+tasks.named("compileKotlin") {
+    dependsOn(tasks.named("jooqCodegen"))
 }
 
 tasks.withType<DokkaTask>().configureEach {
