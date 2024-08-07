@@ -61,6 +61,7 @@ You can run your application in dev mode that enables live coding using:
 ```shell script
 ./bin/start-postgres
 ./bin/generate-flyway
+./bin/generate-jooq
 ./bin/run-dev
 ```
 
