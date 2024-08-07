@@ -12,7 +12,8 @@ object WebClientFactory {
         val client = webClient(baseUrl).build()
         val proxyFactory =
             HttpServiceProxyFactory
-                .builder(WebClientAdapter.forClient(client))
+                .builder()
+                .exchangeAdapter(WebClientAdapter.create(client))
                 .build()
         return proxyFactory.createClient(serviceType)
     }
